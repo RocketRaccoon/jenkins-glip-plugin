@@ -1,0 +1,16 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:c="/lib/credentials">
+    <f:section title="Glip Webhook Settings" name="glip">
+        <f:entry title="Webhook ID" help="">
+            <f:textbox field="webhookId" name="webhookId" value="${instance.getWebhookId()}"/>
+        </f:entry>
+        <f:entry title="Message Activity" help="">
+            <f:textbox field="activity" name="activity"  value="${instance.getActivity()}"/>
+        </f:entry>
+        <f:entry title="Message Icon" help="">
+            <f:textbox field="icon" name="icon" value="${instance.getIcon()}"/>
+        </f:entry>
+        <f:validateButton
+                title="${%Test Connection}" progress="${%Testing...}"
+                method="testConnection" with="webhookId,activity,icon" />
+    </f:section>
+</j:jelly>
