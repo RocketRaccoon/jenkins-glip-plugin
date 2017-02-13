@@ -55,14 +55,16 @@ public class ActiveNotifier implements FineGrainedNotifier {
             if (scmCause == null) {
                 MessageBuilder message = new MessageBuilder(notifier, build);
                 message.appendStatusMessage();
+                String customMessage = "";
                 if (notifier.isIncludeCustomMessage()) {
-                    message.appendCustomMessage();
+                    customMessage = notifier.getCustomMessage();
                 }
-                notifyStart(build, new GlipMessage(notifier.getIcon(), notifier.getActivity(), "", message.toString()));
+                notifyStart(build, new GlipMessage(notifier.getIcon(), notifier.getActivity(), message.toString(), customMessage));
                 return;
             }
         }
 
+        //TODO refactor it
         String changes = getChanges(build, notifier.isIncludeCustomMessage());
         if (changes != null) {
             notifyStart(build, new GlipMessage(changes));
@@ -187,13 +189,16 @@ public class ActiveNotifier implements FineGrainedNotifier {
         message.appendStatusMessage();
         message.appendDuration();
 //        message.appendOpenLink();
+
+        //TODO refactor it, to move test summary into th body
         if (includeTestSummary) {
             message.appendTestSummary();
         }
-        if (includeCustomMessage) {
-            message.appendCustomMessage();
+        String customMessage = "";
+        if (notifier.isIncludeCustomMessage()) {
+            customMessage = notifier.getCustomMessage();
         }
-        return new GlipMessage(notifier.getIcon(), notifier.getActivity(), "", message.toString());
+        return new GlipMessage(notifier.getIcon(), notifier.getActivity(), message.toString(), customMessage);
     }
 
     public static class MessageBuilder {
